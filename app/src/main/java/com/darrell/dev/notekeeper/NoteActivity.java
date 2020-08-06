@@ -1,15 +1,17 @@
 package com.darrell.dev.notekeeper;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.List;
 
@@ -30,6 +32,13 @@ public class NoteActivity extends AppCompatActivity {
     private String mOriginalNoteCourseId;
     private String mOriginalNoteTitle;
     private String mOriginalNoteText;
+    private NoteKeeperOpenHelper mDbHelper;
+
+    @Override
+    protected void onDestroy() {
+        mDbHelper.close();
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,7 @@ public class NoteActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mDbHelper = new NoteKeeperOpenHelper(this);
         mSpinnerCourses = (Spinner) findViewById(R.id.spinner_courses);
 
         List<CourseInfo> courses = DataManager.getInstance().getCourses();
@@ -107,9 +117,19 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void saveNote() {
-        mNote.setCourse((CourseInfo) mSpinnerCourses.getSelectedItem());
-        mNote.setTitle(mTextNoteTitle.getText().toString());
-        mNote.setText(mTextNoteText.getText().toString());
+        //I added this code to try to save data to the database directly. It worked but causes a bug in the recycler view adapter
+        CourseInfo selectedCourse = (CourseInfo) mSpinnerCourses.getSelectedItem();
+        String courseId = selectedCourse.getCourseId();
+        String noteTitle = mTextNoteTitle.getText().toString();
+        String noteText = mTextNoteText.getText().toString();
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        DatabaseDataWorker worker = new DatabaseDataWorker(db);
+        worker.insertNote(courseId, noteTitle, noteText);
+
+//        mNote.setCourse((CourseInfo) mSpinnerCourses.getSelectedItem());
+//        mNote.setTitle(mTextNoteTitle.getText().toString());
+//        mNote.setText(mTextNoteText.getText().toString());
     }
 
     private void displayNote(Spinner spinnerCourses, EditText textNoteTitle, EditText textNoteText) {
