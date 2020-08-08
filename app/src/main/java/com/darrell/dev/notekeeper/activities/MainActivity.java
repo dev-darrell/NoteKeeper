@@ -1,4 +1,4 @@
-package com.darrell.dev.notekeeper;
+package com.darrell.dev.notekeeper.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.darrell.dev.notekeeper.models.CourseInfo;
+import com.darrell.dev.notekeeper.adapters.CourseRecyclerAdapter;
+import com.darrell.dev.notekeeper.database.DataManager;
+import com.darrell.dev.notekeeper.models.NoteInfo;
+import com.darrell.dev.notekeeper.database.NoteKeeperOpenHelper;
+import com.darrell.dev.notekeeper.adapters.NoteRecyclerAdapter;
+import com.darrell.dev.notekeeper.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;

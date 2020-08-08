@@ -3,6 +3,11 @@ package com.darrell.dev.notekeeper;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
+import com.darrell.dev.notekeeper.activities.NoteListActivity;
+import com.darrell.dev.notekeeper.database.DataManager;
+import com.darrell.dev.notekeeper.models.CourseInfo;
+import com.darrell.dev.notekeeper.models.NoteInfo;
+
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;

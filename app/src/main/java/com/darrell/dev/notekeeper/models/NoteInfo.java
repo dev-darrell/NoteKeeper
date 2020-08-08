@@ -1,4 +1,4 @@
-package com.darrell.dev.notekeeper;
+package com.darrell.dev.notekeeper.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,6 +11,7 @@ public final class NoteInfo implements Parcelable {
     private CourseInfo mCourse;
     private String mTitle;
     private String mText;
+    private int mId;
 
     public NoteInfo(CourseInfo course, String title, String text) {
         mCourse = course;
@@ -22,6 +23,13 @@ public final class NoteInfo implements Parcelable {
         mCourse = source.readParcelable(CourseInfo.class.getClassLoader());
         mTitle = source.readString();
         mText = source.readString();
+    }
+
+    public NoteInfo(int id, CourseInfo course, String title, String text) {
+        mId = id;
+        mCourse = course;
+        mTitle = title;
+        mText = text;
     }
 
     public CourseInfo getCourse() {
@@ -46,6 +54,14 @@ public final class NoteInfo implements Parcelable {
 
     public void setText(String text) {
         mText = text;
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
     }
 
     private String getCompareKey() {
@@ -97,4 +113,5 @@ public final class NoteInfo implements Parcelable {
                     return new NoteInfo[size];
                 }
             };
+
 }

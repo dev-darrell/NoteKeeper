@@ -1,4 +1,4 @@
-package com.darrell.dev.notekeeper;
+package com.darrell.dev.notekeeper.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.darrell.dev.notekeeper.R;
+import com.darrell.dev.notekeeper.activities.NoteActivity;
+import com.darrell.dev.notekeeper.models.NoteInfo;
 
 import java.util.List;
 
@@ -38,7 +42,7 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
         NoteInfo note = mNotes.get(position);
         holder.mTextCourse.setText(note.getCourse().getTitle());
         holder.mTextTitle.setText(note.getTitle());
-        holder.mCurrentPosition = position;
+        holder.mId = note.getId();
     }
 
     @Override
@@ -50,7 +54,7 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
 
         public final TextView mTextCourse;
         public final TextView mTextTitle;
-        public int mCurrentPosition;
+        public int mId;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -61,7 +65,7 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, NoteActivity.class);
-                    intent.putExtra(NoteActivity.NOTE_POSITION, mCurrentPosition);
+                    intent.putExtra(NoteActivity.NOTE_ID, mId);
                     mContext.startActivity(intent);
                 }
             });

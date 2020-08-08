@@ -1,4 +1,4 @@
-package com.darrell.dev.notekeeper;
+package com.darrell.dev.notekeeper.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,4 +1,4 @@
-package com.darrell.dev.notekeeper;
+package com.darrell.dev.notekeeper.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

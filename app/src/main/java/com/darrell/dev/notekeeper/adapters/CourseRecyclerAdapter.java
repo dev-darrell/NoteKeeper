@@ -1,4 +1,4 @@
-package com.darrell.dev.notekeeper;
+package com.darrell.dev.notekeeper.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.darrell.dev.notekeeper.R;
+import com.darrell.dev.notekeeper.models.CourseInfo;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;

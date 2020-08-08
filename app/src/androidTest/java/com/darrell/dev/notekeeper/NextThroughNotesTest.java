@@ -5,6 +5,10 @@ import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.rule.ActivityTestRule;
 
+import com.darrell.dev.notekeeper.activities.MainActivity;
+import com.darrell.dev.notekeeper.database.DataManager;
+import com.darrell.dev.notekeeper.models.NoteInfo;
+
 import org.junit.Rule;
 import org.junit.Test;
 
