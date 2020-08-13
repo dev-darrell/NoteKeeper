@@ -1,5 +1,9 @@
 package com.darrell.dev.notekeeper;
 
+import com.darrell.dev.notekeeper.database.DataManager;
+import com.darrell.dev.notekeeper.model.CourseInfo;
+import com.darrell.dev.notekeeper.model.NoteInfo;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;

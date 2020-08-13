@@ -6,18 +6,21 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/pref_title_display_name"
-        app:defaultValue="@string/pref_default_display_name" />
+        app:defaultValue="@string/pref_default_display_name"
+        app:useSimpleSummaryProvider="true"/>
     <EditTextPreference
         android:defaultValue="@string/pref_default_email_address"
         android:key="user_email_address"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_email_address" />
+        android:title="@string/pref_title_email_address"
+        app:useSimpleSummaryProvider="true"/>
     <ListPreference
         android:defaultValue="@string/pref_default_favorite_social"
         android:entries="@array/pref_entries_favorite_social"
         android:entryValues="@array/pref_values_favorite_social"
         android:key="user_favorite_social"
-        android:title="@string/pref_title_favorite_social" />
+        android:title="@string/pref_title_favorite_social"
+        app:useSimpleSummaryProvider="true"/>
 
 </PreferenceScreen>
