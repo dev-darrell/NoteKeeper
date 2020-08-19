@@ -10,6 +10,8 @@ public class Note {
     public String note_title;
     public String note_text;
     public String course_id;
+//    @Embedded(prefix = "courseTable")
+//    public Course course;
 
     public Note(int id, String note_title, String note_text, String course_id) {
         this.note_id = id;

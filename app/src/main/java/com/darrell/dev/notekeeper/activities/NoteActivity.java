@@ -20,13 +20,13 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.darrell.dev.notekeeper.model.CourseInfo;
-import com.darrell.dev.notekeeper.model.NoteInfo;
 import com.darrell.dev.notekeeper.R;
 import com.darrell.dev.notekeeper.database.DataManager;
 import com.darrell.dev.notekeeper.database.NoteKeeperDatabaseContract.CourseInfoEntry;
 import com.darrell.dev.notekeeper.database.NoteKeeperDatabaseContract.NoteInfoEntry;
 import com.darrell.dev.notekeeper.database.NoteKeeperOpenHelper;
+import com.darrell.dev.notekeeper.model.CourseInfo;
+import com.darrell.dev.notekeeper.model.NoteInfo;
 
 public class NoteActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -349,6 +349,7 @@ public class NoteActivity extends AppCompatActivity implements
         return loader;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private CursorLoader createLoaderCourses() {
         mCoursesQueryFinished = false;
         return new CursorLoader(this) {
@@ -367,6 +368,7 @@ public class NoteActivity extends AppCompatActivity implements
         };
     }
 
+    @SuppressLint("StaticFieldLeak")
     private CursorLoader createLoaderNotes() {
         mNotesQueryFinished = false;
         return new CursorLoader(this) {

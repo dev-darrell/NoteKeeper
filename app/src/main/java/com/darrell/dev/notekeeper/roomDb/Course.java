@@ -6,6 +6,11 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Course {
     @PrimaryKey
-//    @ForeignKey(entity = )
     public String course_id;
+    public String course_title;
+
+    public Course(String course_id, String course_title) {
+        this.course_id = course_id;
+        this.course_title = course_title;
+    }
 }
