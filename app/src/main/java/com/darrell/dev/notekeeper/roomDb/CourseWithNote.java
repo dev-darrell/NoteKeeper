@@ -1,13 +1,14 @@
 package com.darrell.dev.notekeeper.roomDb;
 
 import androidx.room.Embedded;
+import androidx.room.Relation;
 
 import java.util.List;
 
 public class CourseWithNote {
     @Embedded
     public Course course;
-    @Embedded
+    @Relation(parentColumn = "course_id", entityColumn = "note_course_id")
     public List<Note> note;
 
     public CourseWithNote(List<Note> note, Course course) {

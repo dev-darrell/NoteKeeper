@@ -1,5 +1,6 @@
 package com.darrell.dev.notekeeper.activities;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -224,6 +225,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Loader<Cursor> loader = null;

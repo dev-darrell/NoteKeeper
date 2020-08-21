@@ -13,9 +13,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -27,6 +30,9 @@ import com.darrell.dev.notekeeper.database.NoteKeeperDatabaseContract.NoteInfoEn
 import com.darrell.dev.notekeeper.database.NoteKeeperOpenHelper;
 import com.darrell.dev.notekeeper.model.CourseInfo;
 import com.darrell.dev.notekeeper.model.NoteInfo;
+import com.darrell.dev.notekeeper.roomDb.Course;
+
+import java.util.List;
 
 public class NoteActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -90,6 +96,8 @@ public class NoteActivity extends AppCompatActivity implements
         mSpinnerCourses.setAdapter(mAdapterCourses);
 
         getLoaderManager().initLoader(LOADER_COURSES, null, this);
+
+//        mAdapterCourses = new ArrayAdapter(this, android.R.layout.simple_spinner_item, courseList);
 
         readDisplayStateValues();
         if(savedInstanceState == null) {
