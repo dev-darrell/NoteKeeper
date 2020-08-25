@@ -1,7 +1,6 @@
 package com.darrell.dev.notekeeper.roomdb.roomDb;
 
 import android.app.Application;
-import android.database.Cursor;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
@@ -12,8 +11,10 @@ import java.util.List;
 
 public class NKeeperViewModel extends AndroidViewModel {
     private NoteKeeperDao mNoteKeeperDao;
-    public LiveData<Cursor> allNoteInfo;
+    public static int mNoteInsertRow;
     public LiveData<List<Course>> allCourses;
+    public static int mCourseInsertRow;
+    public LiveData<List<CourseWithNote>> allNoteInfo;
 
     public NKeeperViewModel(@NonNull Application application) {
         super(application);
@@ -25,19 +26,21 @@ public class NKeeperViewModel extends AndroidViewModel {
         allCourses = mNoteKeeperDao.getAllCourses();
     }
 
-    public LiveData<Note> getNote(int noteId){
+    public LiveData<Note> getNote(int noteId) {
         return mNoteKeeperDao.getNote(noteId);
     }
 
-    public void insertNote(Note note){
-        new UpdateNoteAsyncTask(mNoteKeeperDao).execute(note);
+    public int insertNote(Note note) {
+        new InsertNoteAsyncTask(mNoteKeeperDao).execute(note);
+        return mNoteInsertRow;
     }
 
-    public void insertCourse(Course course){
+    public int insertCourse(Course course) {
         new InsertCourseAsyncTask(mNoteKeeperDao).execute(course);
+        return mCourseInsertRow;
     }
 
-    public void updateNote(Note note){
+    public void updateNote(Note note) {
         new UpdateNoteAsyncTask(mNoteKeeperDao).execute(note);
     }
 
@@ -54,29 +57,31 @@ public class NKeeperViewModel extends AndroidViewModel {
     }
 
 
-    private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {
+    private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Integer> {
         private NoteKeeperDao asyncDao;
+
         public InsertNoteAsyncTask(NoteKeeperDao noteKeeperDao) {
             asyncDao = noteKeeperDao;
         }
 
         @Override
-        protected Void doInBackground(Note... notes) {
-            asyncDao.insertNote(notes[0]);
-            return null;
+        protected Integer doInBackground(Note... notes) {
+            mNoteInsertRow = (int) asyncDao.insertNote(notes[0]);
+            return mNoteInsertRow;
         }
     }
 
-    private static class InsertCourseAsyncTask extends AsyncTask<Course, Void, Void> {
+    private static class InsertCourseAsyncTask extends AsyncTask<Course, Void, Integer> {
         private NoteKeeperDao asyncDao;
+
         public InsertCourseAsyncTask(NoteKeeperDao noteKeeperDao) {
             asyncDao = noteKeeperDao;
         }
 
         @Override
-        protected Void doInBackground(Course... courses) {
-            asyncDao.insertCourse(courses[0]);
-            return null;
+        protected Integer doInBackground(Course... courses) {
+            mCourseInsertRow = Math.toIntExact(asyncDao.insertCourse(courses[0]));
+            return mCourseInsertRow;
         }
     }
 

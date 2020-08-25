@@ -16,6 +16,14 @@ public class Course {
         this.course_title = course_title;
     }
 
+    public int getCourse_key() {
+        return course_key;
+    }
+
+    public void setCourse_key(int course_key) {
+        this.course_key = course_key;
+    }
+
     public String getCourse_id() {
         return course_id;
     }

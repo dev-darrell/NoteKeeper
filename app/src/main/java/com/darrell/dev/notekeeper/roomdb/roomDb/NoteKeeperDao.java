@@ -1,7 +1,5 @@
 package com.darrell.dev.notekeeper.roomdb.roomDb;
 
-import android.database.Cursor;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -12,13 +10,14 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
+
 public interface NoteKeeperDao {
 
     @Insert
-    void insertNote(Note note);
+    long insertNote(Note note);
 
     @Insert
-    void insertCourse(Course course);
+    long insertCourse(Course course);
 
     @Update
     void updateNote(Note note);
@@ -38,7 +37,7 @@ public interface NoteKeeperDao {
     @Query("select * from Course")
     LiveData<List<Course>> getAllCourses();
 
-    @Query("select *, course_title from note join course on " +
+    @Query("select note_id, note_title, course_title from note join course on " +
             "(note_course_id = course_id)")
-    LiveData<Cursor> getAllNoteInfo();
+    LiveData<List<CourseWithNote>> getAllNoteInfo();
 }

@@ -2,7 +2,6 @@ package com.darrell.dev.notekeeper.roomdb.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,43 +11,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.darrell.dev.notekeeper.roomdb.R;
 import com.darrell.dev.notekeeper.roomdb.activities.NoteActivity;
-import com.darrell.dev.notekeeper.roomdb.database.NoteKeeperDatabaseContract.CourseInfoEntry;
-import com.darrell.dev.notekeeper.roomdb.database.NoteKeeperDatabaseContract.NoteInfoEntry;
+import com.darrell.dev.notekeeper.roomdb.roomDb.CourseWithNote;
+
+import java.util.List;
 
 /**
  * Created by Jim.
+ * Maintained and upgraded by Darrell.
  */
 
 public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapter.ViewHolder> {
 
     private final Context mContext;
-    private Cursor mCursor;
     private final LayoutInflater mLayoutInflater;
-    private int mCoursePos;
-    private int mNoteTitlePos;
-    private int mIdPos;
+    private List<CourseWithNote> mCourseWithNote;
 
-    public NoteRecyclerAdapter(Context context, Cursor cursor) {
+    public NoteRecyclerAdapter(Context context, List<CourseWithNote> courseWithNote) {
         mContext = context;
-        mCursor = cursor;
+        mCourseWithNote = courseWithNote;
         mLayoutInflater = LayoutInflater.from(mContext);
-        populateColumnPositions();
     }
 
-    private void populateColumnPositions() {
-        if(mCursor == null)
-            return;
-        // Get column indexes from mCursor
-        mCoursePos = mCursor.getColumnIndex(CourseInfoEntry.COLUMN_COURSE_TITLE);
-        mNoteTitlePos = mCursor.getColumnIndex(NoteInfoEntry.COLUMN_NOTE_TITLE);
-        mIdPos = mCursor.getColumnIndex(NoteInfoEntry._ID);
-    }
-
-    public void changeCursor(Cursor cursor) {
-        if(mCursor != null)
-            mCursor.close();
-        mCursor = cursor;
-        populateColumnPositions();
+    public void changeDataList(List<CourseWithNote> courseWithNote) {
+        mCourseWithNote = courseWithNote;
         notifyDataSetChanged();
     }
 
@@ -60,10 +45,10 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        mCursor.moveToPosition(position);
-        String course = mCursor.getString(mCoursePos);
-        String noteTitle = mCursor.getString(mNoteTitlePos);
-        int id = mCursor.getInt(mIdPos);
+        CourseWithNote currentNoteInfo = mCourseWithNote.get(position);
+        String course = currentNoteInfo.getCourseTitle();
+        String noteTitle = currentNoteInfo.getNoteTitle();
+        int id = currentNoteInfo.getNoteId();
 
         holder.mTextCourse.setText(course);
         holder.mTextTitle.setText(noteTitle);
@@ -72,7 +57,7 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return mCursor == null ? 0 : mCursor.getCount();
+        return mCourseWithNote == null ? 0 : mCourseWithNote.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
