@@ -25,6 +25,7 @@ import com.darrell.dev.notekeeper.roomdb.adapter.CourseRecyclerAdapter;
 import com.darrell.dev.notekeeper.roomdb.adapter.NoteRecyclerAdapter;
 import com.darrell.dev.notekeeper.roomdb.database.DataManager;
 import com.darrell.dev.notekeeper.roomdb.model.CourseInfo;
+import com.darrell.dev.notekeeper.roomdb.roomDb.Course;
 import com.darrell.dev.notekeeper.roomdb.roomDb.CourseWithNote;
 import com.darrell.dev.notekeeper.roomdb.roomDb.NKeeperViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,13 +42,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayoutManager mNotesLayoutManager;
     private CourseRecyclerAdapter mCourseRecyclerAdapter;
     private GridLayoutManager mCoursesLayoutManager;
-//    private NoteKeeperOpenHelper mDbOpenHelper;
 
-    @Override
-    protected void onDestroy() {
-//        mDbOpenHelper.close();
-        super.onDestroy();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +51,26 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        mDbOpenHelper = new NoteKeeperOpenHelper(this);
-
 
         new ViewModelProviders();
         NKeeperViewModel keeperViewModel = ViewModelProviders.of(this).get(NKeeperViewModel.class);
 
-        final Observer<List<CourseWithNote>> noteObserver = new Observer<List<CourseWithNote>>() {
+        final Observer<List<CourseWithNote>> allNotesObserver = new Observer<List<CourseWithNote>>() {
             @Override
-            public void onChanged(List<CourseWithNote> noteInfo) {
-//                TODO: Add break point in recyclerView adapter and debug to see if it's being called by the Observer.
-                mNoteRecyclerAdapter.changeDataList(noteInfo);
+            public void onChanged(List<CourseWithNote> allNoteInfo) {
+                mNoteRecyclerAdapter.changeDataList(allNoteInfo);
             }
         };
-        keeperViewModel.allNoteInfo.observe(this, noteObserver);
+
+        final Observer<List<Course>> courseObserver = new Observer<List<Course>>() {
+            @Override
+            public void onChanged(List<Course> courses) {
+                mCourseRecyclerAdapter.changeDataList(courses);
+            }
+        };
+
+        keeperViewModel.allNoteInfo.observe(this, allNotesObserver);
+        keeperViewModel.allCourses.observe(this, courseObserver);
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -103,8 +104,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
-//        getLoaderManager().restartLoader(LOADER_NOTES, null, this);
         updateNavHeader();
     }
 
@@ -122,23 +121,7 @@ public class MainActivity extends AppCompatActivity
         textEmailAddress.setText(emailAddress);
     }
 
-//    private void loadNotes() {
-//        SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
-//        final String[] noteColumns = {
-//                NoteInfoEntry.COLUMN_NOTE_TITLE,
-//                NoteInfoEntry.COLUMN_COURSE_ID,
-//                NoteInfoEntry._ID};
-//
-//        String noteOrderBy = NoteInfoEntry.COLUMN_COURSE_ID + ", " +
-//                NoteInfoEntry.COLUMN_NOTE_TITLE;
-//        final Cursor noteCursor = db.query(NoteInfoEntry.TABLE_NAME,
-//                noteColumns, null, null, null,
-//                null, noteOrderBy);
-//        mNoteRecyclerAdapter.changeCursor(noteCursor);
-//    }
-
     private void initializeDisplayContent() {
-//        DataManager.loadFromDatabase(mDbOpenHelper);
         mRecyclerItems = findViewById(R.id.list_items);
         mNotesLayoutManager = new LinearLayoutManager(this);
         mCoursesLayoutManager = new GridLayoutManager(this,
@@ -147,7 +130,7 @@ public class MainActivity extends AppCompatActivity
         mNoteRecyclerAdapter = new NoteRecyclerAdapter(this, null);
 
         List<CourseInfo> courses = DataManager.getInstance().getCourses();
-        mCourseRecyclerAdapter = new CourseRecyclerAdapter(this, courses);
+        mCourseRecyclerAdapter = new CourseRecyclerAdapter(this, null);
 
         displayNotes();
     }
@@ -236,51 +219,4 @@ public class MainActivity extends AppCompatActivity
         View view = findViewById(R.id.list_items);
         Snackbar.make(view, message_id, Snackbar.LENGTH_LONG).show();
     }
-
-
-//    @SuppressLint("StaticFieldLeak")
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-//        Loader<Cursor> loader = null;
-//        if(i == LOADER_NOTES) {
-//            loader = new CursorLoader(this) {
-//                @Override
-//                public Cursor loadInBackground() {
-//                    SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
-//                    final String[] noteColumns = {
-//                            NoteInfoEntry.getQName(NoteInfoEntry._ID),
-//                            NoteInfoEntry.COLUMN_NOTE_TITLE,
-//                            CourseInfoEntry.COLUMN_COURSE_TITLE
-//                    };
-//
-//                    final String noteOrderBy = CourseInfoEntry.COLUMN_COURSE_TITLE +
-//                            "," + NoteInfoEntry.COLUMN_NOTE_TITLE;
-//
-//                    // note_info JOIN course_info ON note_info.course_id = course_info.course_id
-//                    String tablesWithJoin = NoteInfoEntry.TABLE_NAME + " JOIN " +
-//                            CourseInfoEntry.TABLE_NAME + " ON " +
-//                            NoteInfoEntry.getQName(NoteInfoEntry.COLUMN_COURSE_ID) + " = " +
-//                            CourseInfoEntry.getQName( CourseInfoEntry.COLUMN_COURSE_ID);
-//
-//                    return db.query(tablesWithJoin, noteColumns,
-//                            null, null, null, null, noteOrderBy);
-//                }
-//            };
-//        }
-//        return loader;
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-//        if(loader.getId() == LOADER_NOTES)  {
-//            mNoteRecyclerAdapter.changeCursor(cursor);
-//        }
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//        if(loader.getId() == LOADER_NOTES)  {
-//            mNoteRecyclerAdapter.changeCursor(null);
-//        }
-//    }
 }

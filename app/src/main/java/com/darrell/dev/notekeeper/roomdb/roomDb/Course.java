@@ -1,14 +1,21 @@
 package com.darrell.dev.notekeeper.roomdb.roomDb;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
 public class Course {
     @PrimaryKey(autoGenerate = true)
-    public int course_key = 0;
+    public int course_key;
     public String course_id;
     public String course_title;
+
+    @Ignore
+    public Course(String course_id, String course_title) {
+        this.course_id = course_id;
+        this.course_title = course_title;
+    }
 
     public Course(int course_key, String course_id, String course_title) {
         this.course_key = course_key;

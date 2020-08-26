@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class NKeeperViewModel extends AndroidViewModel {
     private NoteKeeperDao mNoteKeeperDao;
@@ -15,6 +16,7 @@ public class NKeeperViewModel extends AndroidViewModel {
     public LiveData<List<Course>> allCourses;
     public static int mCourseInsertRow;
     public LiveData<List<CourseWithNote>> allNoteInfo;
+    private static CountDownLatch mLatch;
 
     public NKeeperViewModel(@NonNull Application application) {
         super(application);
@@ -30,13 +32,29 @@ public class NKeeperViewModel extends AndroidViewModel {
         return mNoteKeeperDao.getNote(noteId);
     }
 
+    public Course getCourse(int courseKey) {
+        return mNoteKeeperDao.getCourse(courseKey);
+    }
+
     public int insertNote(Note note) {
+        mLatch = new CountDownLatch(1);
         new InsertNoteAsyncTask(mNoteKeeperDao).execute(note);
+        try {
+            mLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return mNoteInsertRow;
     }
 
     public int insertCourse(Course course) {
+        mLatch = new CountDownLatch(1);
         new InsertCourseAsyncTask(mNoteKeeperDao).execute(course);
+        try {
+            mLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return mCourseInsertRow;
     }
 
@@ -67,6 +85,7 @@ public class NKeeperViewModel extends AndroidViewModel {
         @Override
         protected Integer doInBackground(Note... notes) {
             mNoteInsertRow = (int) asyncDao.insertNote(notes[0]);
+            mLatch.countDown();
             return mNoteInsertRow;
         }
     }
@@ -81,6 +100,7 @@ public class NKeeperViewModel extends AndroidViewModel {
         @Override
         protected Integer doInBackground(Course... courses) {
             mCourseInsertRow = Math.toIntExact(asyncDao.insertCourse(courses[0]));
+            mLatch.countDown();
             return mCourseInsertRow;
         }
     }

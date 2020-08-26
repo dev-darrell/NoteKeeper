@@ -73,6 +73,9 @@ public class NoteActivity extends AppCompatActivity implements
         super.onDestroy();
     }
 
+
+//    TODO: Set up delete note & save state functionality.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,7 @@ public class NoteActivity extends AppCompatActivity implements
         mDbOpenHelper = new NoteKeeperOpenHelper(this);
         mSpinnerCourses = (Spinner) findViewById(R.id.spinner_courses);
 
+//        TODO: Set up spinner to get courses from Room DB.
         mAdapterCourses =
                 new SimpleCursorAdapter(this,
                         android.R.layout.simple_spinner_item, null,
@@ -289,12 +293,7 @@ public class NoteActivity extends AppCompatActivity implements
 //        SQLiteDatabase db = mDbOpenHelper.getWritableDatabase();
 //        mNoteId = (int) db.insert(NoteInfoEntry.TABLE_NAME, null, values);
 
-        Note dummyNote = new Note();
-        dummyNote.setNote_title("");
-        dummyNote.setNote_text("");
-        dummyNote.setNote_course_id("");
-//        TODO: Debug to see why correct row ID is returned if the method is stepped into while debugging and not otherwise.
-        mNoteId = mKeeperViewModel.insertNote(dummyNote);
+        mNoteId = mKeeperViewModel.insertNote(new Note("", "", ""));
     }
 
     @Override

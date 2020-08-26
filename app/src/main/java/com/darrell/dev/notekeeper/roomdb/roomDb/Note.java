@@ -1,21 +1,25 @@
 package com.darrell.dev.notekeeper.roomdb.roomDb;
 
-import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
 public class Note {
     @PrimaryKey(autoGenerate = true)
-    public int note_id = 0;
+    public int note_id;
     public String note_title;
     public String note_text;
     public String note_course_id;
 
-    public Note() {
+    @Ignore
+    public Note(String note_title, String note_text, String note_course_id) {
+        this.note_title = note_title;
+        this.note_text = note_text;
+        this.note_course_id = note_course_id;
     }
 
-    public Note(@Nullable int note_id, String note_title, String note_text, String note_course_id) {
+    public Note(int note_id, String note_title, String note_text, String note_course_id) {
         this.note_id = note_id;
         this.note_title = note_title;
         this.note_text = note_text;

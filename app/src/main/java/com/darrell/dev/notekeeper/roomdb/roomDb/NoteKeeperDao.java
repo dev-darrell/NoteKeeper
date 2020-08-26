@@ -34,10 +34,13 @@ public interface NoteKeeperDao {
     @Query("select * from note where note_id = :noteId")
     LiveData<Note> getNote(int noteId);
 
+    @Query("select * from course where course_key = :courseKey")
+    Course getCourse(int courseKey);
+
     @Query("select * from Course")
     LiveData<List<Course>> getAllCourses();
 
-    @Query("select note_id, note_title, course_title from note join course on " +
+    @Query("select * from note join course on " +
             "(note_course_id = course_id)")
     LiveData<List<CourseWithNote>> getAllNoteInfo();
 }

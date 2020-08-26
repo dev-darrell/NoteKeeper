@@ -1,6 +1,7 @@
 package com.darrell.dev.notekeeper.roomdb.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.darrell.dev.notekeeper.roomdb.R;
-import com.darrell.dev.notekeeper.roomdb.model.CourseInfo;
+import com.darrell.dev.notekeeper.roomdb.activities.CourseActivity;
+import com.darrell.dev.notekeeper.roomdb.roomDb.Course;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -21,13 +23,18 @@ import java.util.List;
 public class CourseRecyclerAdapter extends RecyclerView.Adapter<CourseRecyclerAdapter.ViewHolder> {
 
     private final Context mContext;
-    private final List<CourseInfo> mCourses;
+    private List<Course> mCourses;
     private final LayoutInflater mLayoutInflater;
 
-    public CourseRecyclerAdapter(Context context, List<CourseInfo> courses) {
+    public CourseRecyclerAdapter(Context context, List<Course> courses) {
         mContext = context;
         mCourses = courses;
         mLayoutInflater = LayoutInflater.from(mContext);
+    }
+
+    public void changeDataList(List<Course> courses) {
+        mCourses = courses;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -38,8 +45,8 @@ public class CourseRecyclerAdapter extends RecyclerView.Adapter<CourseRecyclerAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        CourseInfo course = mCourses.get(position);
-        holder.mTextCourse.setText(course.getTitle());
+        Course course = mCourses.get(position);
+        holder.mTextCourse.setText(course.getCourse_title());
         holder.mCurrentPosition = position;
     }
 
@@ -53,16 +60,18 @@ public class CourseRecyclerAdapter extends RecyclerView.Adapter<CourseRecyclerAd
         public final TextView mTextCourse;
         public int mCurrentPosition;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             mTextCourse = (TextView) itemView.findViewById(R.id.text_course);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Snackbar.make(v, mCourses.get(mCurrentPosition).getTitle(),
-                            Snackbar.LENGTH_LONG).show();
-
+                    Course currentCourse = mCourses.get(mCurrentPosition);
+                    Snackbar.make(v, currentCourse.getCourse_title(), Snackbar.LENGTH_LONG).show();
+                    Intent intent = new Intent(itemView.getContext(), CourseActivity.class);
+                    intent.putExtra(CourseActivity.COURSE_KEY, currentCourse.getCourse_key());
+                    itemView.getContext().startActivity(intent);
                 }
             });
         }
