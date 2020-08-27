@@ -12,10 +12,10 @@ import java.util.concurrent.CountDownLatch;
 
 public class NKeeperViewModel extends AndroidViewModel {
     private NoteKeeperDao mNoteKeeperDao;
-    public static int mNoteInsertRow;
     public LiveData<List<Course>> allCourses;
-    public static int mCourseInsertRow;
     public LiveData<List<CourseWithNote>> allNoteInfo;
+    public static int mNoteInsertRow;
+    public static int mCourseInsertRow;
     private static CountDownLatch mLatch;
 
     public NKeeperViewModel(@NonNull Application application) {
@@ -28,7 +28,11 @@ public class NKeeperViewModel extends AndroidViewModel {
         allCourses = mNoteKeeperDao.getAllCourses();
     }
 
-    public LiveData<Note> getNote(int noteId) {
+    public List<Course> getCourseList() {
+        return mNoteKeeperDao.getCourseList();
+    }
+
+    public Note getNote(int noteId) {
         return mNoteKeeperDao.getNote(noteId);
     }
 

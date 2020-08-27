@@ -14,7 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,9 +52,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        new ViewModelProviders();
-        NKeeperViewModel keeperViewModel = ViewModelProviders.of(this).get(NKeeperViewModel.class);
-
+        NKeeperViewModel keeperViewModel = new ViewModelProvider(this).get(NKeeperViewModel.class);
         final Observer<List<CourseWithNote>> allNotesObserver = new Observer<List<CourseWithNote>>() {
             @Override
             public void onChanged(List<CourseWithNote> allNoteInfo) {

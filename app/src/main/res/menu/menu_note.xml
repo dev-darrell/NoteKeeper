@@ -15,6 +15,7 @@
         android:title="Next"
         android:visible="false"
         app:showAsAction="ifRoom|withText" />
+    <item android:title="@string/delete" />
     <item
         android:id="@+id/action_send_mail"
         android:orderInCategory="102"

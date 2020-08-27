@@ -12,7 +12,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.darrell.dev.notekeeper.roomdb.R;
 import com.darrell.dev.notekeeper.roomdb.roomDb.Course;
@@ -45,7 +45,8 @@ public class CourseActivity extends AppCompatActivity {
         mCourseTitle = findViewById(R.id.text_course_title);
         mCourseId = findViewById(R.id.text_course_id);
         mAutoId = findViewById(R.id.auto_course_id_switch);
-        mKeeperViewModel = new ViewModelProviders().of(this).get(NKeeperViewModel.class);
+
+        mKeeperViewModel = new ViewModelProvider(this).get(NKeeperViewModel.class);
 
 
         mAutoId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

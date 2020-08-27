@@ -49,4 +49,5 @@
     <string name="course_title">Course title</string>
     <string name="course_id">Course ID (max - 3 words)</string>
     <string name="auto_course_id">Generate Course ID</string>
+    <string name="delete">Delete</string>
 </resources>

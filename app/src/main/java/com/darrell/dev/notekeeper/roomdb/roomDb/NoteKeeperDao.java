@@ -32,13 +32,16 @@ public interface NoteKeeperDao {
     void deleteCourse(Course course);
 
     @Query("select * from note where note_id = :noteId")
-    LiveData<Note> getNote(int noteId);
+    Note getNote(int noteId);
 
     @Query("select * from course where course_key = :courseKey")
     Course getCourse(int courseKey);
 
     @Query("select * from Course")
     LiveData<List<Course>> getAllCourses();
+
+    @Query("select * from Course")
+    List<Course> getCourseList();
 
     @Query("select * from note join course on " +
             "(note_course_id = course_id)")
